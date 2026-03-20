@@ -8,9 +8,9 @@ Output example:
      0     0    30     0     0
 
 Results:
-         Solver Name |    Time (ms) |      Max-Cut | Solution
----------------------|--------------|--------------|------------------
-          BruteForce |        0.003 |          100 | 1 0 1 0 0 
-  Goemans-Williamson |        0.026 |            0 | 1 1 1 1 1 
-      Greedy-by-node |        0.005 |          100 | 0 0 0 1 1 
+         Solver Name   |    Time (ms) |      Max-Cut | Solution
+-----------------------|--------------|--------------|------------------
+          BruteForce   |        0.003 |          100 | 1 0 1 0 0 
+  Goemans-Williamson   |        0.026 |            0 | 1 1 1 1 1 
+      Greedy-by-node   |        0.005 |          100 | 0 0 0 1 1 
 Greedy-by-node+genetic |        0.004 |          100 | 0 -1 0 1 1 
