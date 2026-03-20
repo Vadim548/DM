@@ -1,0 +1,1 @@
+Max-cut is implemented in C++: full bruteforce; greedy algorithm and greedy clustering for genetic algorithm - not fully implemented, yet gives right results for sparse graphs. Goemans-Williamson algorithm is working incorrectly in C++ and is working in Python. However, Python code is taken from the video you have shared and is modified to parse the input format.
