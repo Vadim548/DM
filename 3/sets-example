@@ -1,0 +1,13 @@
+Set A(space-separated, return to finish): a b c d e
+Set B(space-separated, return to finish): e d s a z x c v b
+Set universal set(space-separated, return to finish): a b c d e e d s a z x c v b w e r t y u u
+
+A: {a, b, c, d, e, }
+B: {a, b, c, d, e, s, v, x, z, }
+U: {a, b, c, d, e, r, s, t, u, v, w, x, y, z, }
+Union: {a, b, c, d, e, s, v, x, z, }
+Intersection: {a, b, c, d, e, }
+A \ B: {}
+B \ A: {s, v, x, z, }
+Absolute complement of A: {r, s, t, u, v, w, x, y, z, }
+Power set of A: {{}, {a, }, {b, }, {a, b, }, {c, }, {a, c, }, {b, c, }, {a, b, c, }, {d, }, {a, d, }, {b, d, }, {a, b, d, }, {c, d, }, {a, c, d, }, {b, c, d, }, {a, b, c, d, }, {e, }, {a, e, }, {b, e, }, {a, b, e, }, {c, e, }, {a, c, e, }, {b, c, e, }, {a, b, c, e, }, {d, e, }, {a, d, e, }, {b, d, e, }, {a, b, d, e, }, {c, d, e, }, {a, c, d, e, }, {b, c, d, e, }, {a, b, c, d, e, }, }

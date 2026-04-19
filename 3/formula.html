@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Logic Formula Evaluator</title>
+    <style>
+        body{
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            line-height: 1.6;
+        }
+        h1{
+            color: #333;
+            text-align: center;
+        }
+        .input-container{
+            display: flex;
+            margin-bottom: 20px;
+        }
+        #formula-input{
+            flex: 1;
+            padding: 10px;
+            font-size: 16px;
+            border: 1px solid #ccc;
+            border-radius: 4px 0 0 4px;
+        }
+        #button{
+            padding: 10px 20px;
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            border-radius: 0 4px 4px 0;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        #button:hover{
+            background-color: #0056b3;
+        }
+        #error{
+            color: red;
+            margin-bottom: 10px;
+        }
+        table{
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        th, td{
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: center;
+        }
+        th{
+            background-color: #f2f2f2;
+        }
+        tr:nth-child(even){
+            background-color: #f9f9f9;
+        }
+    </style>
+</head>
+<body>
+    <h1>Logic Formula Interpreter</h1>
+    <div class="input-container">
+        <input type="text" id="formula-input" placeholder="Enter formula, use 1-letter variables, and, or, not">
+        <button id="button">Generate Truth Table</button>
+    </div>
+    <p id="error"></p>
+    <div id="truth-table"></div>
+
+    <script>
+        document.getElementById('button').addEventListener('click', generateTruthTable);
+        document.getElementById('formula-input').addEventListener('keydown', function(e){
+            if(e.key === 'Enter'){
+                generateTruthTable();
+            }
+        });
+        document.getElementById('formula-input').addEventListener('input', generateTruthTable);
+
+        function generateTruthTable(){
+            const formula = document.getElementById('formula-input').value.trim();
+            const errorElement = document.getElementById('error');
+            const tableContainer = document.getElementById('truth-table');
+
+            errorElement.textContent = '';
+            tableContainer.innerHTML = '';
+
+            if(!formula){
+                errorElement.textContent = 'Please enter a formula.';
+                return;
+            }
+
+            try{
+                const variables = [...new Set(formula.match(/\b[a-zA-Z]\b/g) || [])].sort();
+                if(variables.length === 0){
+                    errorElement.textContent = 'No variables found in the formula.';
+                    return;
+                }
+
+                const combinations = [];
+                for(let i = 0; i < Math.pow(2, variables.length); i++){
+                    const combination = {};
+                    for(let j = 0; j < variables.length; j++){
+                        combination[variables[j]] = (i >> (variables.length - 1 - j)) & 1 ? true : false;
+                    }
+                    combinations.push(combination);
+                }
+
+                const tableData = combinations.map(combination => {
+                    const row = {...combination};
+                    row.Result = evaluateFormula(formula, combination);
+                    return row;
+                });
+
+                const table = document.createElement('table');
+                const headerRow = document.createElement('tr');
+
+                variables.forEach(variable => {
+                    const th = document.createElement('th');
+                    th.textContent = variable;
+                    headerRow.appendChild(th);
+                });
+
+                const resultHeader = document.createElement('th');
+                resultHeader.textContent = 'Result';
+                headerRow.appendChild(resultHeader);
+                table.appendChild(headerRow);
+
+                tableData.forEach(row => {
+                    const tr = document.createElement('tr');
+                    variables.forEach(variable => {
+                        const td = document.createElement('td');
+                        td.textContent = row[variable] ? '1' : '0';
+                        tr.appendChild(td);
+                    });
+                    const resultTd = document.createElement('td');
+                    resultTd.textContent = row.Result ? '1' : '0';
+                    tr.appendChild(resultTd);
+                    table.appendChild(tr);
+                });
+
+                tableContainer.appendChild(table);
+            }catch(e){
+                errorElement.textContent = `Error: ${e.message}`;
+            }
+        }
+
+        function evaluateFormula(formula, variables){
+            let expr = formula.replace(/\b([a-zA-Z])\b/g, (match) => variables[match] ? 'true' : 'false');
+            expr = expr.replace(/\band\b/gi, '&&');
+            expr = expr.replace(/\bor\b/gi, '||');
+            expr = expr.replace(/\bnot\b/gi, '!');
+            console.log("Converted expression:", expr);
+            try{
+                return new Function(`return ${expr}`)();
+            }catch(e){
+                throw new Error('Invalid formula. Use 1-letter vars, and, or, not, and ().');
+            }
+        }
+    </script>
+</body>
+</html>
